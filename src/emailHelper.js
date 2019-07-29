@@ -65,7 +65,7 @@ class EmailHelper {
     async listMessages(maxResults) {
 
         let subjects = SUBJECTS.join('|')
-        let fromEmailAddress = FROM.join(',')
+        let fromEmailAddress = FROM.join('|')
         let filter = `from:(${fromEmailAddress}) subject:({${subjects}})`;
 
         return new Promise((resolve, reject) => {

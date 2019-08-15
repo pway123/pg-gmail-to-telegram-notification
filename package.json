@@ -1,18 +1,18 @@
 {
-  "name": "alerttrigger",
+  "name": "pg-gmail-to-telegram-notification",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest src"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "jest": "^24.8.0",
     "googleapis": "^39.2.0",
     "moment": "^2.22.2",
     "format-email": "^0.1.0",
     "js-base64": "^2.5.1"
-  },
-  "dependencies": {}
+  }
 }

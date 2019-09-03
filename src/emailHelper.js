@@ -2,7 +2,7 @@ const fs = require('fs');
 const { google } = require('googleapis');
 const moment = require('moment');
 const formatEmail = require('format-email');
-const { SUBJECTS, FROM, SENDER, MAX_RESULT } = require('./constant.js');
+const { SUBJECTS, FROM, IFTTT_ACCOUNT_EMAIL, MAX_RESULT } = require('./constant.js');
 const { Base64 } = require('js-base64');
 
 const wait = (time) => new Promise(resolve => setTimeout(resolve, time));
@@ -103,7 +103,7 @@ class EmailHelper {
     }
 
     async sendMessage(subject) {
-        let email = formatEmail(SENDER, 'trigger@applet.ifttt.com', subject, subject)
+        let email = formatEmail(IFTTT_ACCOUNT_EMAIL, 'trigger@applet.ifttt.com', subject, subject)
         // Using the js-base64 library for encoding:
         // https://www.npmjs.com/package/npm 
         var base64EncodedEmail = Base64.encodeURI(email);

@@ -4,7 +4,7 @@ const moment = require('moment');
 const {
     TIME_INTERVAL,
     SUBJECTS,
-    SENDER,
+    IFTTT_ACCOUNT_EMAIL,
     FROM,
     EMAILS_TO_EXTRACT_CONTENT,
     KEYS_TO_EXTRACT_CONTENT,
@@ -21,7 +21,7 @@ async function list() {
             throw new Error('From Address not defined')
         }
 
-        if (!SENDER) {
+        if (!IFTTT_ACCOUNT_EMAIL) {
             throw new Error('Sender email address not Defined')
         }
 

@@ -1,6 +1,6 @@
 const SUBJECTS = ['', '']
 const TIME_INTERVAL = 12000 //added buffer of 2 seconds for code processing
-const SENDER = ''
+const IFTTT_ACCOUNT_EMAIL = ''
 const FROM = ['']
 const MAX_RESULT = 1
 const EMAILS_TO_EXTRACT_CONTENT = [FROM[0]]
@@ -10,7 +10,7 @@ const EMAILS_TO_ADD_HASHTAG = [{ email: FROM[0], hashTag: '#ops' }]
 module.exports = {
     SUBJECTS,
     TIME_INTERVAL,
-    SENDER,
+    IFTTT_ACCOUNT_EMAIL,
     FROM,
     MAX_RESULT,
     EMAILS_TO_EXTRACT_CONTENT,

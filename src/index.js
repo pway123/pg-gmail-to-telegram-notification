@@ -46,7 +46,7 @@ async function list() {
 
                 if (subject) {
 
-                    bodyContent = utils.extractEmailBodyContent(email.payload.parts[0].body.data, keys);
+                    bodyContent = utils.extractEmailBodyContent(emailSender, email.payload.parts[0].body.data);
 
                     hashTag = utils.emailHashTag(emailSender, subject);
 
@@ -63,10 +63,17 @@ async function list() {
 }
 
 
-let subjects = list();
+async function start() {
+    let subjects = await list();
 
-console.log(`${subjects.length} number of notification to send`);
+    console.log(`${subjects.length} number of notification to send`);
 
-subjects.map(async subject => {
-    await emailHelper.sendToIfttt(`${subject} - ${moment().format('MMMM Do YYYY, h:mm:ss ')}`) //iftt won't trigger is subject have been sent previously
-})
+    if (subjects && Array.isArray(subjects)) {
+        subjects.map(async subject => {
+            await emailHelper.sendToIfttt(`${subject} - ${moment().format('MMMM Do YYYY, h:mm:ss ')}`) //iftt won't trigger is subject have been sent previously
+        })
+    }
+
+}
+
+start();

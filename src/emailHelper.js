@@ -17,6 +17,11 @@ class EmailHelper {
         this.gmail = google.gmail({ version: 'v1', auth: this.oAuth2Client });
     }
 
+    /**
+     * 
+     * @param {object} credentials 
+     * @param {object} token 
+     */
     initializeOAuthClient(credentials, token) {
         const { client_secret, client_id, redirect_uris } = credentials.web;
         const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
@@ -25,6 +30,10 @@ class EmailHelper {
         return oAuth2Client;
     }
 
+    /**
+     * 
+     * @param {object} options 
+     */
     async getEmails(options) {
         let startTime = moment().valueOf();
 
@@ -37,6 +46,10 @@ class EmailHelper {
         return result;
     }
 
+    /**
+     * 
+     * @param {object} options 
+     */
     async getEmailsUntilMaxTries(options = {}) {
         try {
             let { maxResults = MAX_RESULT, maxTries = 2, interval = 1500 } = options;
@@ -62,6 +75,10 @@ class EmailHelper {
 
     }
 
+    /**
+     * 
+     * @param {integer} maxResults 
+     */
     async listMessages(maxResults) {
 
         let subjects = SUBJECTS.join('|')
@@ -82,10 +99,18 @@ class EmailHelper {
         });
     }
 
+    /**
+     * 
+     * @param {array} messages 
+     */
     getMessages(messages) {
         return Promise.all(messages.map(msg => this.getMessage(msg.id)));
     }
 
+    /**
+     * 
+     * @param {string} messageId 
+     */
     getMessage(messageId) {
         return new Promise((resolve, reject) => {
             this.gmail.users.messages.get({
@@ -102,6 +127,10 @@ class EmailHelper {
         });
     }
 
+    /**
+     * 
+     * @param {string} subject 
+     */
     async sendMessage(subject) {
         let email = formatEmail(IFTTT_ACCOUNT_EMAIL, 'trigger@applet.ifttt.com', subject, subject)
         // Using the js-base64 library for encoding:

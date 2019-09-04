@@ -2,7 +2,7 @@ const fs = require('fs');
 const { google } = require('googleapis');
 const moment = require('moment');
 const formatEmail = require('format-email');
-const { SUBJECTS, FROM, IFTTT_ACCOUNT_EMAIL, MAX_RESULT } = require('./constant.js');
+const { SUBJECTS, EMAIL_SENDER, IFTTT_ACCOUNT_EMAIL, MAX_RESULT } = require('./constant.js');
 const { Base64 } = require('js-base64');
 
 const wait = (time) => new Promise(resolve => setTimeout(resolve, time));
@@ -82,7 +82,7 @@ class EmailHelper {
     async listMessages(maxResults) {
 
         let subjects = SUBJECTS.join('|')
-        let fromEmailAddress = FROM.join('|')
+        let fromEmailAddress = EMAIL_SENDER.join('|')
         let filter = `from:(${fromEmailAddress}) subject:({${subjects}})`;
 
         return new Promise((resolve, reject) => {

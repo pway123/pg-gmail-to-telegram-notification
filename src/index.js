@@ -5,8 +5,7 @@ const {
     TIME_INTERVAL,
     SUBJECTS,
     IFTTT_ACCOUNT_EMAIL,
-    FROM,
-    EMAILS_TO_ADD_HASHTAG } = require('./constant');
+    EMAIL_SENDER } = require('./constant');
 const utils = require('./utils');
 
 async function list() {
@@ -15,7 +14,7 @@ async function list() {
             throw new Error("No subject defined, please set at least one subject");
         }
 
-        if (FROM.length <= 0) {
+        if (EMAIL_SENDER.length <= 0) {
             throw new Error('From Address not defined')
         }
 
@@ -59,6 +58,7 @@ async function list() {
     }
     catch (err) {
         console.log("ERROR", err);
+        return;
     }
 }
 
@@ -66,9 +66,10 @@ async function list() {
 async function start() {
     let subjects = await list();
 
-    console.log(`${subjects.length} number of notification to send`);
-
     if (subjects && Array.isArray(subjects)) {
+
+        console.log(`${subjects.length} number of notification to send`);
+
         subjects.map(async subject => {
             await emailHelper.sendToIfttt(`${subject} - ${moment().format('MMMM Do YYYY, h:mm:ss ')}`) //iftt won't trigger is subject have been sent previously
         })

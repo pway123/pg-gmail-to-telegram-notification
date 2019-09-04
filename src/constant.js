@@ -2,7 +2,7 @@ const SUBJECTS = ['']
 const TIME_INTERVAL = 10600 //added buffer of 0.6 seconds for code to pull emails from gmail
 const IFTTT_ACCOUNT_EMAIL = ''
 const EMAIL_SENDER = ['']
-const MAX_RESULT = 1
+const MAX_RESULT = 10
 /**
  * {
         email: 'emailSender',

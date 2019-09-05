@@ -23,7 +23,7 @@ function extractEmailBodyContent(email, content) {
 
     keys.map(key => {
         let indexOfKey = body.indexOf(key);
-        bodyContent += `${key}${extractTextFromLine(body, indexOfKey + key.length, content.length).trim()}. `;
+        bodyContent += `${key}${extractTextFromLine(body, indexOfKey + key.length, body.length).trim()}. `;
     });
     return bodyContent;
 

@@ -1,12 +1,7 @@
-const emailHelper = require('./emailHelper');
 const moment = require('moment');
-
-const {
-    TIME_INTERVAL,
-    SUBJECTS,
-    IFTTT_ACCOUNT_EMAIL,
-    EMAIL_SENDER } = require('./constant');
+const emailHelper = require('./emailHelper');
 const utils = require('./utils');
+const { TIME_INTERVAL, SUBJECTS, IFTTT_ACCOUNT_EMAIL, EMAIL_SENDER } = require('./constant');
 
 async function list() {
     try {
@@ -15,17 +10,17 @@ async function list() {
         }
 
         if (EMAIL_SENDER.length <= 0) {
-            throw new Error('From Address not defined')
+            throw new Error('From Address not defined');
         }
 
         if (!IFTTT_ACCOUNT_EMAIL) {
-            throw new Error('Sender email address not Defined')
+            throw new Error('Sender email address not Defined');
         }
 
         let now = moment().format('x');
         let emails = await emailHelper.getEmails();
 
-        let emailSubjects = []
+        let emailSubjects = [];
         emails.map(email => {
             if (now - email.internalDate < (TIME_INTERVAL ? TIME_INTERVAL : 10000)) {
                 let emailSender = '';
@@ -49,7 +44,7 @@ async function list() {
 
                     hashTag = utils.emailHashTag(emailSender, subject);
 
-                    emailSubjects.push(`${subject} :: ${bodyContent} ${hashTag}`)
+                    emailSubjects.push(`${subject} :: ${bodyContent} ${hashTag}`);
                 }
             }
         })
@@ -57,24 +52,28 @@ async function list() {
         return emailSubjects;
     }
     catch (err) {
-        console.log("ERROR", err);
+        console.log("ERROR:list", err);
         return;
     }
 }
 
 
 async function start() {
-    let subjects = await list();
+    try {
+        let subjects = await list();
 
-    if (subjects && Array.isArray(subjects)) {
+        if (subjects && Array.isArray(subjects)) {
 
-        console.log(`${subjects.length} number of notification to send`);
+            console.log(`${subjects.length} number of notification to send`);
 
-        subjects.map(async subject => {
-            await emailHelper.sendToIfttt(`${subject} - ${moment().format('MMMM Do YYYY, h:mm:ss ')}`) //iftt won't trigger is subject have been sent previously
-        })
+            subjects.map(async subject => {
+                await emailHelper.sendToIfttt(`${subject} - ${moment().format('MMMM Do YYYY, h:mm:ss ')}`); //iftt won't trigger is subject have been sent previously
+            })
+        }
     }
-
+    catch (err) {
+        console.log("ERROR:start", err);
+    }
 }
 
 start();

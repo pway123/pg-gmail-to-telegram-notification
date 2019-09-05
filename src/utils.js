@@ -49,6 +49,9 @@ function extractTextFromLine(content, start, end) {
  * @returns {array||undefined}
  */
 function keysToExtractEmailContent(email) {
+    if (!EMAILS_TO_EXTRACT_CONTENT) {
+        return;
+    }
 
     for (let i = 0; i < EMAILS_TO_EXTRACT_CONTENT.length; i++) {
         if (EMAILS_TO_EXTRACT_CONTENT[i].email === email) {
@@ -88,12 +91,16 @@ function findWordsInSubject(subject, words) {
  */
 function emailHashTag(emailSender, subject) {
     let hashTagArr = [];
-    EMAILS_TO_ADD_HASHTAG.forEach(emailToAddHashTag => {
-        let wordsToMatch = emailToAddHashTag.wordsToMatchInSubject;
-        if (emailSender.includes(emailToAddHashTag.email) && ((wordsToMatch && wordsToMatch.length > 0) ? findWordsInSubject(subject, wordsToMatch) : true)) {
-            hashTagArr.push(emailToAddHashTag.hashTag);
-        }
-    })
+
+    if (EMAILS_TO_ADD_HASHTAG) {
+        EMAILS_TO_ADD_HASHTAG.forEach(emailToAddHashTag => {
+            let wordsToMatch = emailToAddHashTag.wordsToMatchInSubject;
+            if (emailSender.includes(emailToAddHashTag.email) && ((wordsToMatch && wordsToMatch.length > 0) ? findWordsInSubject(subject, wordsToMatch) : true)) {
+                hashTagArr.push(emailToAddHashTag.hashTag);
+            }
+        });
+    }
+
     return hashTagArr.join(' ');
 }
 

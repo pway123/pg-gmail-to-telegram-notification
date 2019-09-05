@@ -52,7 +52,7 @@ class EmailHelper {
      */
     async getEmailsUntilMaxTries(options = {}) {
         try {
-            let { maxResults = MAX_RESULT, maxTries = 2, interval = 1500 } = options;
+            let { maxResults = (MAX_RESULT ? MAX_RESULT : 10), maxTries = 2, interval = 1500 } = options;
 
             for (let numTries = 1; numTries <= maxTries; numTries++) {
                 let messages = await this.listMessages(maxResults);

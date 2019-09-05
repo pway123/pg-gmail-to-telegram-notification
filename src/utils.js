@@ -54,8 +54,8 @@ function keysToExtractEmailContent(email) {
     }
 
     for (let i = 0; i < EMAILS_TO_EXTRACT_CONTENT.length; i++) {
-        if (EMAILS_TO_EXTRACT_CONTENT[i].email === email) {
-            return EMAILS_TO_EXTRACT_CONTENT[i].keys;
+        if (EMAILS_TO_EXTRACT_CONTENT[i]['email'] === email) {
+            return EMAILS_TO_EXTRACT_CONTENT[i]['keys'];
         }
     }
 

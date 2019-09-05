@@ -48,13 +48,13 @@ function extractTextFromLine(content, start, end) {
  * @param {string} email 
  * @returns {array||undefined}
  */
-function keysToExtractEmailContent(email) {
+function keysToExtractEmailContent(emailSender) {
     if (!EMAILS_TO_EXTRACT_CONTENT) {
         return;
     }
 
     for (let i = 0; i < EMAILS_TO_EXTRACT_CONTENT.length; i++) {
-        if (EMAILS_TO_EXTRACT_CONTENT[i]['email'] === email) {
+        if (emailSender.includes(EMAILS_TO_EXTRACT_CONTENT[i]['email'])) {
             return EMAILS_TO_EXTRACT_CONTENT[i]['keys'];
         }
     }

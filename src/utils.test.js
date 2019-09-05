@@ -123,7 +123,7 @@ describe('Utils Test', () => {
 
     describe('keysToExtractEmailContent', () => {
 
-        let email = `test@gmail.com`;
+        let email = `test <test@gmail.com>`;
 
         test('Expect function to return the keys stated in EMAILS_TO_EXTRACT_CONTENT if email is included in EMAILS_TO_EXTRACT_CONTENT', () => {
             let result = utils.keysToExtractEmailContent(email);

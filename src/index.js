@@ -17,12 +17,15 @@ async function list() {
             throw new Error('Sender email address not Defined');
         }
 
-        let now = moment().format('x');
         let emails = await emailHelper.getEmails();
 
         let emailSubjects = [];
         emails.map(email => {
-            if (now - email.internalDate < (TIME_INTERVAL ? TIME_INTERVAL : 10000)) {
+
+            let timeInterval = (TIME_INTERVAL ? TIME_INTERVAL : 10000);
+            let emailTime = email.internalDate % timeInterval;
+
+            if (timeInterval - emailTime < timeInterval) {
                 let emailSender = '';
                 let subject = '';
                 let bodyContent = '';

@@ -17,15 +17,13 @@ async function list() {
             throw new Error('Sender email address not Defined');
         }
 
+        let now = moment().format('x');
         let emails = await emailHelper.getEmails();
 
         let emailSubjects = [];
         emails.map(email => {
-
-            let timeInterval = (TIME_INTERVAL ? TIME_INTERVAL : 10000);
-            let emailTime = email.internalDate % timeInterval;
-
-            if (timeInterval - emailTime < timeInterval) {
+            //if email comes in at 5 sec mark where the first cron task run from 0-10 sec, this email will still gets pickup based on this logic. however, sending the same subject text to ifftt wont trigger the notification
+            if (now - email.internalDate < (TIME_INTERVAL ? TIME_INTERVAL : 10000)) {
                 let emailSender = '';
                 let subject = '';
                 let bodyContent = '';
@@ -70,7 +68,7 @@ async function start() {
             console.log(`${subjects.length} number of notification to send`);
 
             subjects.map(async subject => {
-                await emailHelper.sendToIfttt(`${subject} - ${moment().format('MMMM Do YYYY, h:mm:ss ')}`); //iftt won't trigger is subject have been sent previously
+                await emailHelper.sendToIfttt(`${subject}`);
             })
         }
     }

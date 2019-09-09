@@ -23,7 +23,7 @@ async function list() {
 
         let emailSubjects = [];
         emails.map(email => {
-            if (utils.toSendEmailAsNotification(mail.internalDate, now)) {
+            if (utils.toSendEmailAsNotification(email.internalDate, now)) {
                 let emailSender = '';
                 let subject = '';
                 let bodyContent = '';

@@ -1,5 +1,6 @@
 const base64 = require('js-base64').Base64;
-const { EMAILS_TO_EXTRACT_CONTENT, EMAILS_TO_ADD_HASHTAG } = require('./constant');
+const moment = require('moment');
+const { EMAILS_TO_EXTRACT_CONTENT, EMAILS_TO_ADD_HASHTAG, TIME_INTERVAL } = require('./constant');
 
 /**
  * 
@@ -104,10 +105,28 @@ function emailHashTag(emailSender, subject) {
     return hashTagArr.join(' ');
 }
 
+function toSendEmailAsNotification(emailInternalTimeStamp, startTimeStamp) {
+    let perviousStartTime = process.env.PREVIOUS_START_TIME;
+    let toSendEmailAsNotification = false;
+
+    if ((!perviousStartTime || perviousStartTime === null || perviousStartTime === 'undefined')
+        && (startTimeStamp - emailInternalTimeStamp <= (TIME_INTERVAL ? TIME_INTERVAL : 10000))) {
+        toSendEmailAsNotification = true
+    }
+    else if ((perviousStartTime && perviousStartTime !== 'undefined' && perviousStartTime !== null)
+        && (perviousStartTime < emailInternalTimeStamp && emailInternalTimeStamp <= startTimeStamp)) {
+        toSendEmailAsNotification = true
+    }
+
+    process.env['PREVIOUS_START_TIME'] = startTimeStamp;
+    return toSendEmailAsNotification;
+}
+
 module.exports = {
     extractEmailBodyContent,
     extractTextFromLine,
     keysToExtractEmailContent,
     findWordsInSubject,
-    emailHashTag
+    emailHashTag,
+    toSendEmailAsNotification
 }

@@ -1,5 +1,6 @@
 const utils = require('./utils');
-const constant = require('./constant');
+const moment = require('moment');
+const { TIME_INTERVAL } = require('./constant');
 
 jest.mock('./constant', () => ({
     EMAILS_TO_EXTRACT_CONTENT: [
@@ -16,6 +17,7 @@ jest.mock('./constant', () => ({
             keys: ['wo']
         }
     ],
+    TIME_INTERVAL: 10000,
     EMAILS_TO_ADD_HASHTAG: [{
         email: 'test@gmail.com',
         hashTag: '#ops',
@@ -159,5 +161,39 @@ describe('Utils Test', () => {
             expect(result).toEqual('')
         })
 
+    });
+
+    describe('toSendEmailAsNotification', () => {
+        let functionStartTimeStamp = 100000;
+        let emailSendTimeStamp = functionStartTimeStamp - (TIME_INTERVAL / 2);
+
+        test('Expect function to return true when email timestamp it fall with the time interval and PREVIOUS_START_TIME env var is not set', () => {
+            let result = utils.toSendEmailAsNotification(emailSendTimeStamp, functionStartTimeStamp);
+            expect(result).toBe(true);
+        })
+
+        test('Expect function to return true when email timestamp it fall with the time interval and PREVIOUS_START_TIME env var is undefined', () => {
+            process.env['PREVIOUS_START_TIME'] = undefined;
+            let result = utils.toSendEmailAsNotification(emailSendTimeStamp, functionStartTimeStamp);
+            expect(result).toBe(true);
+        })
+
+        test('Expect function to return true when email timestamp it fall with the time interval and PREVIOUS_START_TIME env var is defined from previous run', () => {
+            process.env['PREVIOUS_START_TIME'] = functionStartTimeStamp - TIME_INTERVAL;
+            let result = utils.toSendEmailAsNotification(emailSendTimeStamp, functionStartTimeStamp);
+            expect(result).toBe(true);
+        })
+
+        test('Expect function to return false when email timestamp it fall outside the time interval and PREVIOUS_START_TIME env var is undefined', () => {
+            process.env['PREVIOUS_START_TIME'] = undefined;
+            let result = utils.toSendEmailAsNotification(functionStartTimeStamp - (TIME_INTERVAL * 3), functionStartTimeStamp);
+            expect(result).toBe(false);
+        })
+
+        test('Expect function to return false when email timestamp it fall outside the time interval and PREVIOUS_START_TIME env var is undefined', () => {
+            process.env['PREVIOUS_START_TIME'] = functionStartTimeStamp - TIME_INTERVAL;
+            let result = utils.toSendEmailAsNotification(functionStartTimeStamp - (TIME_INTERVAL * 3), functionStartTimeStamp);
+            expect(result).toBe(false);
+        })
     });
 });

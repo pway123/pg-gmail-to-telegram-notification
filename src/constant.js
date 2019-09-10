@@ -16,7 +16,7 @@ const EMAILS_TO_EXTRACT_CONTENT = []
  *  {
         email: 'emailSender',
         hashTag: '#ops',
-        wordsToMatchInSubject: ['some string']
+        wordsToMatchInSubject: [{word:'some string', toContain: true}]
     },
  */
 const EMAILS_TO_ADD_HASHTAG = []

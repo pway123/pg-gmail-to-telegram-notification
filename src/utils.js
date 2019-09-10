@@ -72,16 +72,35 @@ function keysToExtractEmailContent(emailSender) {
  * when either of the words is found in the subject, the function will return true
  */
 function findWordsInSubject(subject, words) {
+
+    let wordFound = false;
+
     if (!words)
-        return false;
+        return wordFound;
 
     for (let i = 0; i < words.length; i++) {
-        if (subject.indexOf(words[i]) > -1) {
-            return true;
+        if (!('toContain' in words[i])) {
+            throw new Error('word object toContain is undefined');
+        }
+
+        if (!('word' in words[i])) {
+            throw new Error('word object word is undefined');
+        }
+
+        if (words[i]['toContain'] && subject.indexOf(words[i]['word']) > -1) {
+            wordFound = true;
+            break;
+        }
+        else if (!words[i]['toContain'] && subject.indexOf(words[i]['word']) === -1) {
+            wordFound = true;
+        }
+        else if (!words[i]['toContain'] && subject.indexOf(words[i]['word']) !== -1) {
+            wordFound = false;
         }
     }
 
-    return false;
+
+    return wordFound;
 }
 
 /**
@@ -96,7 +115,7 @@ function emailHashTag(emailSender, subject) {
     if (EMAILS_TO_ADD_HASHTAG) {
         EMAILS_TO_ADD_HASHTAG.forEach(emailToAddHashTag => {
             let wordsToMatch = emailToAddHashTag.wordsToMatchInSubject;
-            if (emailSender.includes(emailToAddHashTag.email) && ((wordsToMatch && wordsToMatch.length > 0) ? findWordsInSubject(subject, wordsToMatch) : true)) {
+            if (emailSender.includes(emailToAddHashTag.email) && ((wordsToMatch && wordsToMatch.length > 0) ? this.findWordsInSubject(subject, wordsToMatch) : true)) {
                 hashTagArr.push(emailToAddHashTag.hashTag);
             }
         });
@@ -121,6 +140,7 @@ function toSendEmailAsNotification(emailInternalTimeStamp, startTimeStamp) {
     process.env['PREVIOUS_START_TIME'] = startTimeStamp;
     return toSendEmailAsNotification;
 }
+
 
 module.exports = {
     extractEmailBodyContent,

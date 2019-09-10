@@ -21,11 +21,11 @@ jest.mock('./constant', () => ({
     EMAILS_TO_ADD_HASHTAG: [{
         email: 'test@gmail.com',
         hashTag: '#ops',
-        wordsToMatchInSubject: ['word-1', 'word-2']
+        wordsToMatchInSubject: [{ word: 'word-1', toContain: true }, { word: 'word-2', toContain: true }]
     }, {
         email: 'test@gmail.com',
         hashTag: '#ops2',
-        wordsToMatchInSubject: ['word-1', 'word-2']
+        wordsToMatchInSubject: [{ word: 'word-1', toContain: true }, { word: 'word-2', toContain: true }]
     },
     {
         email: 'test@gmail.com',
@@ -97,14 +97,24 @@ describe('Utils Test', () => {
     describe('findWordsInSubject', () => {
 
         let subject = `ALARM: "pg-test-cw_alarm-sqs_test" in Asia Pacific (United State)`;
+
         test('If either words is contain in the subject, function should return true', () => {
-            let result = utils.findWordsInSubject(subject, ['test', 'pg-test'])
+            let result = utils.findWordsInSubject(subject, [{ word: 'test', toContain: true }, { word: 'pg-test', toContain: true }])
             expect(result).toBe(true);
         })
 
         test('If neither words is contain in the subject, function should return false', () => {
-            let result = utils.findWordsInSubject(subject, ['no-found', 'testing'])
+            let result = utils.findWordsInSubject(subject, [{ word: 'not-found', toContain: true }, { word: 'testing', toContain: true }])
             expect(result).toBe(false);
+        })
+
+        test('If all words are not contain in the subject, function should return true', () => {
+            let result = utils.findWordsInSubject(subject, [{ word: 'not-found', toContain: false }, { word: 'testing', toContain: false }])
+            expect(result).toBe(true);
+        })
+
+        test('If word object is invalid, expect function to throw error', () => {
+            expect(() => { utils.findWordsInSubject(subject, ['not-found', 'testing']) }).toThrow();
         })
 
         test('Function should return false when words param is an empty array', () => {
@@ -147,11 +157,13 @@ describe('Utils Test', () => {
         let subject = 'test subject for-word-1-to be found'
 
         test('Expect function to return the hashtag ops and ops2 if email and words is included in EMAILS_TO_ADD_HASHTAG', () => {
+            utils.findWordsInSubject = jest.fn(() => true);
             let result = utils.emailHashTag(email, subject);
             expect(result).toEqual('#ops #ops2 #ops3')
         })
 
         test('Expect function to return the hashtag stated in EMAILS_TO_ADD_HASHTAG if email is included in EMAILS_TO_ADD_HASHTAG', () => {
+            utils.findWordsInSubject = jest.fn(() => false);
             let hashtag = utils.emailHashTag(email, 'test subject for-word-3-to be found');
             expect(hashtag).toEqual('#ops3');
         })

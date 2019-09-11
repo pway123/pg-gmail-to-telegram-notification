@@ -41,7 +41,7 @@ async function list() {
 
                 if (subject) {
 
-                    bodyContent = utils.extractEmailBodyContent(emailSender, email.payload.parts[0].body.data);
+                    bodyContent = utils.extractEmailBodyContent(emailSender, email.payload.parts ? email.payload.parts[0].body.data : email.payload.body.data);
 
                     hashTag = utils.emailHashTag(emailSender, subject);
 

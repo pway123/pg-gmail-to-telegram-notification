@@ -1,13 +1,6 @@
 const utils = require('./utils');
 const moment = require('moment');
 const { TIME_INTERVAL } = require('./constant');
-const mockFS = require('mock-fs');
-
-mockFS({
-    __dirname: {
-        'PREVIOUS_START_TIME': ''
-    }
-});
 
 jest.mock('./constant', () => ({
     EMAILS_TO_EXTRACT_CONTENT: [
@@ -187,7 +180,6 @@ describe('Utils Test', () => {
         let emailSendTimeStamp = functionStartTimeStamp - (TIME_INTERVAL / 2);
 
         afterAll(() => {
-            mockFS.restore();
         })
 
         test('Expect function to return true when email timestamp it fall with the time interval and PREVIOUS_START_TIME env var is not set', () => {

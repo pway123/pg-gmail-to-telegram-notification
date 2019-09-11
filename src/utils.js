@@ -1,7 +1,7 @@
 const base64 = require('js-base64').Base64;
 const moment = require('moment');
 const { EMAILS_TO_EXTRACT_CONTENT, EMAILS_TO_ADD_HASHTAG, TIME_INTERVAL } = require('./constant');
-
+const fs = require('fs');
 /**
  * 
  * @param {string} email 
@@ -125,8 +125,19 @@ function emailHashTag(emailSender, subject) {
 }
 
 function toSendEmailAsNotification(emailInternalTimeStamp, startTimeStamp) {
-    let perviousStartTime = process.env.PREVIOUS_START_TIME;
+
+    let perviousStartTime;
     let toSendEmailAsNotification = false;
+
+    if (fs.existsSync(`${__dirname}/PREVIOUS_START_TIME`)) {
+        fs.readFile(`${__dirname}/PREVIOUS_START_TIME`, { encoding: 'utf-8' }, function (err, data) {
+            if (!err) {
+                perviousStartTime = data;
+            } else {
+                console.log(err);
+            }
+        });
+    }
 
     if ((!perviousStartTime || perviousStartTime === null || perviousStartTime === 'undefined')
         && (startTimeStamp - emailInternalTimeStamp <= (TIME_INTERVAL ? TIME_INTERVAL : 10000))) {
@@ -137,7 +148,12 @@ function toSendEmailAsNotification(emailInternalTimeStamp, startTimeStamp) {
         toSendEmailAsNotification = true
     }
 
-    process.env['PREVIOUS_START_TIME'] = startTimeStamp;
+    fs.writeFile(`${__dirname}/PREVIOUS_START_TIME`, startTimeStamp, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+
     return toSendEmailAsNotification;
 }
 

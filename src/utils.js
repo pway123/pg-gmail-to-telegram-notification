@@ -125,36 +125,40 @@ function emailHashTag(emailSender, subject) {
 }
 
 function toSendEmailAsNotification(emailInternalTimeStamp, startTimeStamp) {
-
     let perviousStartTime;
     let toSendEmailAsNotification = false;
 
-    if (fs.existsSync(`${__dirname}/PREVIOUS_START_TIME`)) {
-        fs.readFile(`${__dirname}/PREVIOUS_START_TIME`, { encoding: 'utf-8' }, function (err, data) {
-            if (!err) {
-                perviousStartTime = data;
-            } else {
+    try {
+        if (fs.existsSync(`${__dirname}/PREVIOUS_START_TIME`)) {
+            fs.readFile(`${__dirname}/PREVIOUS_START_TIME`, { encoding: 'utf-8' }, function (err, data) {
+                if (!err) {
+                    perviousStartTime = data;
+                } else {
+                    console.log(err);
+                }
+            });
+        }
+
+        if ((!perviousStartTime || perviousStartTime === null || perviousStartTime === 'undefined')
+            && (startTimeStamp - emailInternalTimeStamp <= (TIME_INTERVAL ? TIME_INTERVAL : 10000))) {
+            toSendEmailAsNotification = true
+        }
+        else if ((perviousStartTime && perviousStartTime !== 'undefined' && perviousStartTime !== null)
+            && (perviousStartTime < emailInternalTimeStamp && emailInternalTimeStamp <= startTimeStamp)) {
+            toSendEmailAsNotification = true
+        }
+
+        fs.writeFile(`${__dirname}/PREVIOUS_START_TIME`, startTimeStamp, function (err) {
+            if (err) {
                 console.log(err);
             }
         });
-    }
 
-    if ((!perviousStartTime || perviousStartTime === null || perviousStartTime === 'undefined')
-        && (startTimeStamp - emailInternalTimeStamp <= (TIME_INTERVAL ? TIME_INTERVAL : 10000))) {
-        toSendEmailAsNotification = true
+        return toSendEmailAsNotification;
+    } catch (err) {
+        console.log(err);
+        return toSendEmailAsNotification;
     }
-    else if ((perviousStartTime && perviousStartTime !== 'undefined' && perviousStartTime !== null)
-        && (perviousStartTime < emailInternalTimeStamp && emailInternalTimeStamp <= startTimeStamp)) {
-        toSendEmailAsNotification = true
-    }
-
-    fs.writeFile(`${__dirname}/PREVIOUS_START_TIME`, startTimeStamp, function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-
-    return toSendEmailAsNotification;
 }
 
 

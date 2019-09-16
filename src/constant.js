@@ -20,6 +20,7 @@ const EMAILS_TO_EXTRACT_CONTENT = []
     },
  */
 const EMAILS_TO_ADD_HASHTAG = []
+const OVERLAP_BUFFER = 500;
 
 module.exports = {
     SUBJECTS,
@@ -28,5 +29,6 @@ module.exports = {
     EMAIL_SENDER,
     MAX_RESULT,
     EMAILS_TO_EXTRACT_CONTENT,
-    EMAILS_TO_ADD_HASHTAG
+    EMAILS_TO_ADD_HASHTAG,
+    OVERLAP_BUFFER
 }

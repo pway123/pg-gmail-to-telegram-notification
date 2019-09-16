@@ -1,9 +1,8 @@
 const base64 = require('js-base64').Base64;
 const moment = require('moment');
-const { EMAILS_TO_EXTRACT_CONTENT, EMAILS_TO_ADD_HASHTAG, TIME_INTERVAL } = require('./constant');
+const { EMAILS_TO_EXTRACT_CONTENT, EMAILS_TO_ADD_HASHTAG, TIME_INTERVAL, OVERLAP_BUFFER } = require('./constant');
 const fs = require('fs');
 
-const OVERLAP_BUFFER = 500;
 /**
  * 
  * @param {string} email 

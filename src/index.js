@@ -68,7 +68,7 @@ async function start() {
             console.log(`${subjects.length} number of notification to send`);
 
             subjects.map(async subject => {
-                await emailHelper.sendToIfttt(`${subject} - ${moment().format('MMMM Do YYYY, h:mm:ss ')}`); //iftt won't trigger is subject have been sent previously
+                await emailHelper.sendToIfttt(`${subject}`); //Note: iftt won't trigger is subject have been sent previously
             })
         }
     }

@@ -1,6 +1,7 @@
 const moment = require('moment');
 const emailHelper = require('./emailHelper');
 const utils = require('./utils');
+const fs = require('fs');
 const { SUBJECTS, IFTTT_ACCOUNT_EMAIL, EMAIL_SENDER } = require('./constant');
 
 async function list() {

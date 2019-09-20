@@ -51,11 +51,7 @@ async function list() {
             }
         })
 
-        fs.writeFile(`${__dirname}/PREVIOUS_START_TIME`, now, function (err) {
-            if (err) {
-                console.log(err);
-            }
-        });
+        fs.writeFileSync(`${__dirname}/PREVIOUS_START_TIME`, now, 'utf8');
 
         return emailSubjects;
     }
@@ -75,7 +71,10 @@ async function start() {
             console.log(`${subjects.length} number of notification to send`);
 
             subjects.map(async subject => {
-                await emailHelper.sendToIfttt(`${subject}`); //Note: iftt won't trigger is subject have been sent previously
+                emailHelper.sendToIfttt(`${subject}`)
+                    .catch(err => {
+                        console.log("ERROR:sendToIfttt", err);
+                    });
             })
         }
     }

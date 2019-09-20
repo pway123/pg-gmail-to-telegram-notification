@@ -1,5 +1,4 @@
 const base64 = require('js-base64').Base64;
-const moment = require('moment');
 const { EMAILS_TO_EXTRACT_CONTENT, EMAILS_TO_ADD_HASHTAG, TIME_INTERVAL, OVERLAP_BUFFER } = require('./constant');
 const fs = require('fs');
 
@@ -131,13 +130,11 @@ function toSendEmailAsNotification(emailInternalTimeStamp, startTimeStamp) {
 
     try {
         if (fs.existsSync(`${__dirname}/PREVIOUS_START_TIME`)) {
-            fs.readFile(`${__dirname}/PREVIOUS_START_TIME`, { encoding: 'utf-8' }, function (err, data) {
-                if (!err) {
-                    perviousStartTime = data;
-                } else {
-                    console.log(err);
-                }
-            });
+            perviousStartTime = fs.readFileSync(`${__dirname}/PREVIOUS_START_TIME`);
+            if (perviousStartTime) {
+
+                perviousStartTime = Number(perviousStartTime.toString('utf8'));
+            }
         }
 
         if ((!perviousStartTime || perviousStartTime === null || perviousStartTime === 'undefined')
@@ -148,12 +145,6 @@ function toSendEmailAsNotification(emailInternalTimeStamp, startTimeStamp) {
             && (perviousStartTime - OVERLAP_BUFFER <= emailInternalTimeStamp && emailInternalTimeStamp <= startTimeStamp)) {
             toSendEmailAsNotification = true
         }
-
-        fs.writeFile(`${__dirname}/PREVIOUS_START_TIME`, startTimeStamp, function (err) {
-            if (err) {
-                console.log(err);
-            }
-        });
 
         return toSendEmailAsNotification;
     } catch (err) {

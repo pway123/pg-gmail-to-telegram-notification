@@ -21,13 +21,13 @@ function existsSync(pathToDirectory) {
     return mockFiles[pathToDirectory];
 }
 
-function readFile(pathToDirectory, encoding, callback) {
+function readFileSync(pathToDirectory) {
     const dir = path.join(__dirname, '..', 'src', '/');
     const file = pathToDirectory.split(dir)[1];
-    return callback(null, mockFiles[pathToDirectory][file])
+    return mockFiles[pathToDirectory][file] ? mockFiles[pathToDirectory][file].toString() : mockFiles[pathToDirectory][file]
 }
 
 fs.existsSync = existsSync
-fs.readFile = readFile
+fs.readFileSync = readFileSync
 fs.__createMockFiles = __createMockFiles;
 module.exports = fs;

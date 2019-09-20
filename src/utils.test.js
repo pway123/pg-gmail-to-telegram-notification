@@ -33,7 +33,8 @@ jest.mock('./constant', () => ({
         email: 'test@gmail.com',
         hashTag: '#ops3',
         wordsToMatchInSubject: []
-    }]
+    }],
+    OVERLAP_BUFFER: 500
 }));
 
 describe('Utils Test', () => {
@@ -196,31 +197,31 @@ describe('Utils Test', () => {
             "PREVIOUS_START_TIME": undefined
         }
 
-        test('Expect function to return true when email timestamp it fall with the time interval and PREVIOUS_START_TIME env var is not set', () => {
+        test('Expect function to return true when email timestamp it fall with the time interval and PREVIOUS_START_TIME is not set', () => {
             fs.__createMockFiles(FOLDER_PRESENT_CONFIG);
             let result = utils.toSendEmailAsNotification(emailSendTimeStamp, functionStartTimeStamp);
             expect(result).toBe(true);
         })
 
-        test('Expect function to return true when email timestamp it fall with the time interval and PREVIOUS_START_TIME env var is undefined', () => {
+        test('Expect function to return true when email timestamp it fall with the time interval and PREVIOUS_START_TIME is undefined', () => {
             fs.__createMockFiles(NO_FOLDER_PRESENT_CONFIG);
             let result = utils.toSendEmailAsNotification(emailSendTimeStamp, functionStartTimeStamp);
             expect(result).toBe(true);
         })
 
-        test('Expect function to return true when email timestamp it fall with the time interval and PREVIOUS_START_TIME env var is defined from previous run', () => {
+        test('Expect function to return true when email timestamp it fall with the time interval and PREVIOUS_START_TIME is defined from previous run', () => {
             fs.__createMockFiles({ "PREVIOUS_START_TIME": functionStartTimeStamp - TIME_INTERVAL });
             let result = utils.toSendEmailAsNotification(emailSendTimeStamp, functionStartTimeStamp);
             expect(result).toBe(true);
         })
 
-        test('Expect function to return false when email timestamp it fall outside the time interval and PREVIOUS_START_TIME env var is undefined', () => {
+        test('Expect function to return false when email timestamp it fall outside the time interval and PREVIOUS_START_TIME is undefined', () => {
             fs.__createMockFiles(NO_FOLDER_PRESENT_CONFIG);
             let result = utils.toSendEmailAsNotification(functionStartTimeStamp - (TIME_INTERVAL * 3), functionStartTimeStamp);
             expect(result).toBe(false);
         })
 
-        test('Expect function to return false when email timestamp it fall outside the time interval and PREVIOUS_START_TIME env var is undefined', () => {
+        test('Expect function to return false when email timestamp it fall outside the time interval and PREVIOUS_START_TIME is undefined', () => {
             fs.__createMockFiles({ "PREVIOUS_START_TIME": functionStartTimeStamp - TIME_INTERVAL });
             let result = utils.toSendEmailAsNotification(functionStartTimeStamp - (TIME_INTERVAL * 3), functionStartTimeStamp);
             expect(result).toBe(false);

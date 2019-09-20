@@ -50,6 +50,12 @@ async function list() {
             }
         })
 
+        fs.writeFile(`${__dirname}/PREVIOUS_START_TIME`, now, function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+
         return emailSubjects;
     }
     catch (err) {

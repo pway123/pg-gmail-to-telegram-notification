@@ -4,9 +4,9 @@ const utils = require('./utils');
 const fs = require('fs');
 const { SUBJECTS, IFTTT_ACCOUNT_EMAIL, EMAIL_SENDER } = require('./constant');
 
-async function list() {
+async function list(now) {
     try {
-        let now = moment().format('x');
+
 
         if (SUBJECTS.length <= 0) {
             throw new Error("No subject defined, please set at least one subject");
@@ -51,20 +51,22 @@ async function list() {
             }
         })
 
-        fs.writeFileSync(`${__dirname}/PREVIOUS_START_TIME`, now, 'utf8');
+
 
         return emailSubjects;
     }
     catch (err) {
         console.log("ERROR:list", err);
-        return;
+        return null;
     }
 }
 
 
 async function start() {
     try {
-        let subjects = await list();
+        let now = moment().format('x');
+        console.log(`###### Start Job at ${moment(Number(now)).format('MMMM Do YYYY, h:mm:ss a')} #######`);
+        let subjects = await list(now);
 
         if (subjects && Array.isArray(subjects)) {
 
@@ -76,6 +78,8 @@ async function start() {
                         console.log("ERROR:sendToIfttt", err);
                     });
             })
+
+            fs.writeFileSync(`${__dirname}/PREVIOUS_START_TIME`, now, 'utf8');
         }
     }
     catch (err) {

@@ -40,7 +40,16 @@ async function list(now) {
                     }
                 })
 
-                if (subject) {
+                if (subject.includes('[PG-File-Parser] Successful file import for')) {
+                    const body = utils.decodeBase64(email.payload.parts ? email.payload.parts[0].body.data : email.payload.body.data);
+                    const intErrCount = utils.extractRefIntErrFromLine(body);
+                    if (intErrCount > 0) {
+                        hashTag = utils.emailHashTag(emailSender, subject);
+
+                        emailSubjects.push(`${subject} :: <b>With Reference Integrity Error</b> ${hashTag}`);
+                    }
+                }
+                else if (subject) {
 
                     bodyContent = utils.extractEmailBodyContent(emailSender, email.payload.parts ? email.payload.parts[0].body.data : email.payload.body.data);
 

@@ -19,7 +19,7 @@ function extractEmailBodyContent(email, content) {
         return '';
     }
 
-    let body = base64.decode(content.replace(/-/g, '+').replace(/_/g, '/'));
+    let body = this.decodeBase64(content)
     let bodyContent = '';
 
     keys.map(key => {
@@ -28,6 +28,10 @@ function extractEmailBodyContent(email, content) {
     });
     return bodyContent;
 
+}
+
+function decodeBase64(base64Content) {
+    return base64.decode(base64Content.replace(/-/g, '+').replace(/_/g, '/'));
 }
 
 /**
@@ -42,6 +46,17 @@ function extractTextFromLine(content, start, end) {
         return ''
     }
     return `${content.charAt(start)}${extractTextFromLine(content, start + 1, end)}`;
+
+}
+
+function extractRefIntErrFromLine(content, key = 'int err: ', lengthOfString = 1) {
+
+    const indexOfKey = content.indexOf(key);
+    if (indexOfKey === -1 || !content || content.length < indexOfKey + 1) {
+        return ''
+    }
+
+    return Number(content.substr(indexOfKey + key.length, lengthOfString)) + Number(extractRefIntErrFromLine(content.substr(indexOfKey + key.length + 1, content.length - indexOfKey + 1)));
 }
 
 /**
@@ -160,5 +175,7 @@ module.exports = {
     keysToExtractEmailContent,
     findWordsInSubject,
     emailHashTag,
-    toSendEmailAsNotification
+    toSendEmailAsNotification,
+    extractRefIntErrFromLine,
+    decodeBase64
 }

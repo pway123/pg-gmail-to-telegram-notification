@@ -1,0 +1,7 @@
+[template]
+src = "pg.env.tmpl"
+dest = ".env"
+keys = [
+    "/ifttt_email",
+    "/email_sender"
+]

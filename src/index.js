@@ -1,3 +1,4 @@
+require('dotenv').config()
 const moment = require('moment');
 const emailHelper = require('./emailHelper');
 const utils = require('./utils');

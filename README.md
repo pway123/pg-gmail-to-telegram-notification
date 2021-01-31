@@ -6,5 +6,6 @@ Telegram chat groups consists of #ops (Production) and #dev
 
 # Running the project
 
-1. sh bin/pull_param.sh 
-2. node index.js (to be a cron schedule)
+1. npm i
+2. sh bin/pull_param.sh 
+3. node index.js (to be a cron schedule)

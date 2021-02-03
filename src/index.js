@@ -1,4 +1,5 @@
-require("dotenv").config({ path: __dirname + "/.env" });
+const path = require('path');
+require("dotenv").config({ path: path.join(__dirname, "/../.env") });
 const moment = require('moment');
 const emailHelper = require('./emailHelper');
 const utils = require('./utils');

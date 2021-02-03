@@ -2,3 +2,6 @@ node_modules/*
 src/gmail_token.json
 src/gmail_credentials.json
 src/PREVIOUS_START_TIME
+.env
+log.txt
+.DS_Store

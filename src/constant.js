@@ -1,4 +1,4 @@
-const SUBJECTS = ['ALARM:', 'has FAILED', 'Parents Gateway Common Service',
+const SUBJECTS = ['[PG ID Interface]','Imperva','ALARM:', 'has FAILED', 'Parents Gateway Common Service',
     '[PG-File-Parser] Job Attempt Not Ran Again', '[PG-File-Parser] Unexpected Error in', '[PG-File-Parser] Failed file import']
 const TIME_INTERVAL = 60000
 const IFTTT_ACCOUNT_EMAIL = process.env.IFTTT_ACCOUNT_EMAIL

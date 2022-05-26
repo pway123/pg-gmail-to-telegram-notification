@@ -52,6 +52,11 @@ const EMAILS_TO_ADD_HASHTAG = [{
     email: EMAIL_SENDER[0],
     hashTag: '#dev',
     wordsToMatchInSubject: [{ word: 'pg-p-cw', toContain: false }]
+},
+{
+    email: EMAIL_SENDER[4],
+    hashTag: '#ops',
+    wordsToMatchInSubject: [{ word: '[PG ID Interface] Job', toContain: true }]
 }]
 const OVERLAP_BUFFER = 500;
 

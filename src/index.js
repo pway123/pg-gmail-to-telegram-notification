@@ -41,8 +41,8 @@ async function list(now) {
                         subject = item.value;
                     }
                 })
-
-                if (subject.includes('[PG-File-Parser] Successful file import for')) {
+                
+                if (subject.includes('[PG-File-Parser][SC] Successful file import for') || subject.includes('[PG-File-Parser][MK] Successful file import for')) {
                     const body = utils.decodeBase64(email.payload.parts ? email.payload.parts[0].body.data : email.payload.body.data);
                     const intErrCount = utils.extractRefIntErrFromLine(body);
                     if (intErrCount > 0) {
@@ -61,9 +61,6 @@ async function list(now) {
                 }
             }
         })
-
-
-
         return emailSubjects;
     }
     catch (err) {
@@ -78,16 +75,16 @@ async function start() {
         let now = moment().format('x');
         console.log(`###### Start Job at ${moment(Number(now)).format('MMMM Do YYYY, h:mm:ss a')} #######`);
         let subjects = await list(now);
-
         if (subjects && Array.isArray(subjects)) {
 
             console.log(`${subjects.length} number of notification to send`);
 
             subjects.map(async subject => {
-                emailHelper.sendToIfttt(`${subject}`)
-                    .catch(err => {
-                        console.log("ERROR:sendToIfttt", err);
-                    });
+                console.log('>>>> subject:', subject);
+                // emailHelper.sendToIfttt(`${subject}`)
+                //     .catch(err => {
+                //         console.log("ERROR:sendToIfttt", err);
+                //     });
             })
 
             fs.writeFileSync(`${__dirname}/PREVIOUS_START_TIME`, now, 'utf8');

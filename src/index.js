@@ -81,10 +81,10 @@ async function start() {
 
             subjects.map(async subject => {
                 console.log('>>>> subject:', subject);
-                // emailHelper.sendToIfttt(`${subject}`)
-                //     .catch(err => {
-                //         console.log("ERROR:sendToIfttt", err);
-                //     });
+                emailHelper.sendToIfttt(`${subject}`)
+                    .catch(err => {
+                        console.log("ERROR:sendToIfttt", err);
+                    });
             })
 
             fs.writeFileSync(`${__dirname}/PREVIOUS_START_TIME`, now, 'utf8');

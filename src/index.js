@@ -23,7 +23,7 @@ async function list(now) {
         }
 
         let emails = await emailHelper.getEmails();
-
+        
         let emailSubjects = [];
         emails.map(email => {
             if (utils.toSendEmailAsNotification(email.internalDate, now)) {
@@ -41,8 +41,8 @@ async function list(now) {
                         subject = item.value;
                     }
                 })
-                
-                if (subject.includes('[PG-File-Parser][SC] Successful file import for') || subject.includes('[PG-File-Parser][MK] Successful file import for')) {
+
+                if (subject.includes('[PG-File-Parser][SC] Successful file import for')) {
                     const body = utils.decodeBase64(email.payload.parts ? email.payload.parts[0].body.data : email.payload.body.data);
                     const intErrCount = utils.extractRefIntErrFromLine(body);
                     if (intErrCount > 0) {
@@ -59,8 +59,11 @@ async function list(now) {
 
                     emailSubjects.push(`${subject} :: ${bodyContent} ${hashTag}`);
                 }
+
+                
             }
         })
+        
         return emailSubjects;
     }
     catch (err) {

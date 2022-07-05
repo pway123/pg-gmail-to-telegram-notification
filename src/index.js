@@ -83,7 +83,7 @@ async function start() {
             console.log(`${subjects.length} number of notification to send`);
 
             subjects.map(async subject => {
-                console.log('>>>> subject:', subject);
+                console.log('Sending to IFTTT: ', subject);
                 emailHelper.sendToIfttt(`${subject}`)
                     .catch(err => {
                         console.log("ERROR:sendToIfttt", err);
@@ -91,6 +91,7 @@ async function start() {
             })
 
             fs.writeFileSync(`${__dirname}/PREVIOUS_START_TIME`, now, 'utf8');
+            console.log('#############################');
         }
     }
     catch (err) {

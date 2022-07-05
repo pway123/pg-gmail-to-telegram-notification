@@ -58,7 +58,7 @@ const EMAILS_TO_ADD_HASHTAG = [{
     hashTag: '#ops',
     wordsToMatchInSubject: [{ word: '[PG ID Interface] Job', toContain: true },{ word: '[PG-File-Parser]', toContain: true }]
 }]
-const OVERLAP_BUFFER = 500;
+const OVERLAP_BUFFER = 3000;
 
 module.exports = {
     SUBJECTS,

@@ -146,6 +146,7 @@ class EmailHelper {
                 if (err) {
                     reject(err)
                 }
+                console.log('Email IFTTT: ', res)
                 resolve(res)
             });
         });

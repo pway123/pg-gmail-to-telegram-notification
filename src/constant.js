@@ -1,5 +1,14 @@
-const SUBJECTS = ['[PG ID Interface]','Imperva','ALARM:', 'has FAILED', 'Parents Gateway Common Service',
-    '[PG-File-Parser] Job Attempt Not Ran Again', '[PG-File-Parser] Unexpected Error in', '[PG-File-Parser] Failed file import']
+const SUBJECTS = [
+    '[PG ID Interface]',
+    'Imperva',
+    'ALARM:',
+    'has FAILED',
+    'Parents Gateway Common Service',
+    '[PG-File-Parser] Job Attempt Not Ran Again',
+    '[PG-File-Parser] Unexpected Error in',
+    '[PG-File-Parser] Failed file import',
+    '[Bamboo]'
+]
 const TIME_INTERVAL = 60000
 const IFTTT_ACCOUNT_EMAIL = process.env.IFTTT_ACCOUNT_EMAIL
 const EMAIL_SENDER = process.env.EMAIL_SENDER.split(',')
@@ -57,6 +66,11 @@ const EMAILS_TO_ADD_HASHTAG = [{
     email: EMAIL_SENDER[4],
     hashTag: '#ops',
     wordsToMatchInSubject: [{ word: '[PG ID Interface] Job', toContain: true },{ word: '[PG-File-Parser]', toContain: true }]
+},
+{
+    email: EMAIL_SENDER[5],
+    hashTag: "#ops",
+    wordsToMatchInSubject: [{ word: '[Bamboo]', toContain: true }]
 }]
 const OVERLAP_BUFFER = 3000;
 
@@ -70,4 +84,3 @@ module.exports = {
     EMAILS_TO_ADD_HASHTAG,
     OVERLAP_BUFFER
 }
-
